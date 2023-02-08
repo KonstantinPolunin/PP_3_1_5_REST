@@ -2,11 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update user</title>
-</head>
-<body>
-<h2>Update user</h2>
-<form th:method="PATCH" th:action="@{/admin/{id}(id=${user.getId})}" th:object="${user}">
+    <title>Registration</title>
+
+<form th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
+    <h2>Registration</h2>
     <label for="name">Enter name</label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
@@ -19,12 +18,6 @@
     <label for="password">Enter password</label>
     <input type="text" th:field="*{password}" id="password"/>
     <br/>
-    <hr/>
-    <input type="submit" value="Edit"/>
-    <br/>
-    <a th:href="@{/logout}" type="button">logout</a>
-    <br/>
-    <label for="roles"><b>Role</b></label>
     <select th:field="*{roles}" multiple class="form-control form-control-sm" id="roles" name="roles" size="10"
             required>
         <option th:each="role: ${roles}"
@@ -33,8 +26,16 @@
 
         </option>
     </select>
+    <!--<input type="checkbox" id="roles" th:each="role: ${role}"
+           th:text="${role}"
+           th:value="${role.}"
+           th:field="*{roles}"/>-->
+    <hr/>
+    <input type="submit" value="Sign up"/>
+    <br/>
 </form>
-
+</head>
+<body>
 
 </body>
 </html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>User info</title>
 </head>
+<h2>User info</h2>
 <body>
 <la>id: </la><tr th:text="${user.getId()}">id</tr>
 <br/>
@@ -11,15 +12,13 @@
 <br/>
 <la>age: </la><tr th:utext="${user.getAge()}">age</tr>
 <br/>
+<la>email: </la><tr th:utext="${user.getEmail()}">email</tr>
+<br/>
+<la>password: </la><tr th:utext="${user.getPassword()}">password</tr>
+<br/>
+<hr/>
+<a th:href="@{/logout}" type="button">logout</a>
 <!--<a th:href="@{/{id}/edit(id=${user.getId()})}">Update</a>-->
-<form th:method="GET" th:action="@{/{id}/edit(id=${user.getId()})}">
-    <input type="submit" value="Update"/>
-</form>
-
-<form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}">
-    <input type="submit" value="Delete"/>
-</form>
-
 
 </body>
 </html>
