@@ -38,7 +38,7 @@ public class UsersController {
     public String newUser(/*@ModelAttribute("User") User user*/ Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getListRoles());
-        return "new";
+        return "auth/registration";
     }
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("user") User user) {

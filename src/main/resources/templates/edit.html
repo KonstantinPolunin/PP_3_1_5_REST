@@ -19,10 +19,6 @@
     <label for="password">Enter password</label>
     <input type="text" th:field="*{password}" id="password"/>
     <br/>
-    <hr/>
-    <input type="submit" value="Edit"/>
-    <br/>
-    <a th:href="@{/logout}" type="button">logout</a>
     <br/>
     <label for="roles"><b>Role</b></label>
     <select th:field="*{roles}" multiple class="form-control form-control-sm" id="roles" name="roles" size="10"
@@ -33,6 +29,10 @@
 
         </option>
     </select>
+    <hr/>
+    <input type="submit" value="Edit"/>
+    <br/>
+    <a th:href="@{/logout}" type="button">logout</a>
 </form>
 
 

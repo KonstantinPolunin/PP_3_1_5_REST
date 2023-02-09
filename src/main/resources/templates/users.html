@@ -24,8 +24,6 @@
             <form style="display: inline-block" th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
                 <button  type="submit">delete</button>
             </form>
-
-
         </td>
 </table>
 <!--<div th:each="user : ${userList}">
@@ -43,8 +41,6 @@
     </div>
 </div>-->
 <br/>
-<br/>
-<hr/>
 <a th:href="@{/admin/new}" type="button">Create</a>
 <br/>
 <a th:href="@{/logout}" type="button">logout</a>
