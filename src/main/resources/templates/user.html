@@ -17,7 +17,9 @@
 <la>password: </la><tr th:utext="${user.getPassword()}">password</tr>
 <br/>
 <hr/>
-<a th:href="@{/logout}" type="button">logout</a>
+<a th:href="@{/logout}">
+    <input type="button" value="logout"/>
+</a>
 <!--<a th:href="@{/{id}/edit(id=${user.getId()})}">Update</a>-->
 
 </body>

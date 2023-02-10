@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.security.PersonDetails;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -64,8 +63,8 @@ public class UsersController {
     @GetMapping("/user/info")
     public String userInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        model.addAttribute("user", userService.findById(personDetails.getUser().getId()));
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", userService.findById(user.getId()));
         return "user";
     }
 }
