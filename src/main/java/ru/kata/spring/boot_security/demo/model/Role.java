@@ -17,8 +17,6 @@ public class Role implements GrantedAuthority {
     @Column
     private String role;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
 
     public Role() {
     }
@@ -48,6 +46,7 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return getRole();
     }
+
     public String getNameNotPrefix() {
         return role.replace("ROLE_", "");
     }

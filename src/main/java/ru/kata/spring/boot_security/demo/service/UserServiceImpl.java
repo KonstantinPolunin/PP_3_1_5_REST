@@ -45,14 +45,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(Long id, User updatedUser) {
-        User user = userRepository.getById(id);
-        user.setName(updatedUser.getName());
-        user.setAge(updatedUser.getAge());
-        user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
-        user.setRoles(updatedUser.getRoles());
-        /*updatedUser.setId(id);*/
-        userRepository.save(user);
+        /*User authUser = userRepository.getById(id);
+        authUser.setFirstName(updatedUser.getFirstName());
+        authUser.setAge(updatedUser.getAge());
+        authUser.setEmail(updatedUser.getEmail());
+        authUser.setPassword(updatedUser.getPassword());
+        authUser.setRoles(updatedUser.getRoles());*/
+        updatedUser.setId(id);
+        userRepository.save(updatedUser);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional
     @Override
-    public void add(User user) {
-        userDao.add(user);
+    public void add(User authUser) {
+        userDao.add(authUser);
     }
 
     @Transactional
@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(Long id, User user) {
-        userDao.update(id, user);
+    public void update(Long id, User authUser) {
+        userDao.update(id, authUser);
     }
 
     @Transactional
