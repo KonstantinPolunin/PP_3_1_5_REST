@@ -89,10 +89,10 @@
                                     <td th:utext="${user.email}">...</td>
                                     <td th:utext="${user.roleToString}">...</td>
                                     <td><!--<form style="display: inline-block" th:method="GET" th:action="@{/admin/{id}/edit(id=${authUser.getId()})}">-->
-                                        <button type="submit" class="btn btn-info" data-toggle="modal" th:data-target="${'#modalEdit'+user.id}">Edit</button>
+                                        <button type="submit" class="btn btn-info" data-toggle="modal" th:data-target="${'#editModal'}+${user.id}">Edit</button>
 
                                         <!--Модальное окно edit-->
-                                            <div class="modal fade" th:id="${'modalEdit' +user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal fade" th:id="${'editModal'}+${user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -105,35 +105,35 @@
                                                             <div class="container-fluid bg-white">
                                                                 <div class="d-flex justify-content-center align-items-center">
                                                                     <div class="col-5 text-center">
-                                                                        <form th:method="PATCH" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
+                                                                        <form th:method="POST" th:action="@{/admin/{id}/edit(id=${user.getId()})}" th:object="${user}">
                                                                             <div class="form-group">
                                                                                 <label for="ID">ID</label>
-                                                                                <input type="text" th:field="*{id}" class="form-control" id="ID"/>
+                                                                                <input type="text" th:value="*{id}" class="form-control" id="ID"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="firstName2">First Name</label>
-                                                                                <input type="text" th:field="*{firstName}" class="form-control" id="firstName2"/>
+                                                                                <input type="text" th:value="*{firstName}" class="form-control" id="firstName2"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="lastName2">Last Name</label>
-                                                                                <input type="text" th:field="*{lastName}" class="form-control" id="lastName2"/>
+                                                                                <input type="text" th:value="*{lastName}" class="form-control" id="lastName2"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="age2">Age</label>
-                                                                                <input type="text" th:field="*{age}" class="form-control" id="age2"/>
+                                                                                <input type="text" th:value="*{age}" class="form-control" id="age2"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="email2">Email</label>
-                                                                                <input type="text" th:field="*{email}" class="form-control" id="email2"/>
+                                                                                <input type="text" th:value="*{email}" class="form-control" id="email2"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="password2">Password</label>
-                                                                                <input type="text" th:field="*{password}" class="form-control" id="password2"/>
+                                                                                <input type="text" th:value="*{password}" class="form-control" id="password2"/>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="roles2">Role</label>
-                                                                                <select th:field="*{roles}" multiple class="form-control form-control-sm" id="roles2" name="roles" size="3" required>
-                                                                                    <option th:each="role: ${user.roles}"
+                                                                                <select th:value="*{roles}" multiple class="form-control form-control-sm" id="roles2" name="roles" size="3" required>
+                                                                                    <option th:each="role: ${roles}"
                                                                                             th:value="${role.id}"
                                                                                             th:text="${role.role}">
 
