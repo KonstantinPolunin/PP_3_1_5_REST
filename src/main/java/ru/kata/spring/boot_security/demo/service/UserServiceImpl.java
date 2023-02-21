@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(Long id, User updatedUser) {
-        /*User authUser = userRepository.getById(id);
-        authUser.setFirstName(updatedUser.getFirstName());
-        authUser.setAge(updatedUser.getAge());
-        authUser.setEmail(updatedUser.getEmail());
-        authUser.setPassword(updatedUser.getPassword());
-        authUser.setRoles(updatedUser.getRoles());*/
+        /*User user = userRepository.getById(id);
+        user.setFirstName(updatedUser.getFirstName());
+        user.setAge(updatedUser.getAge());
+        user.setEmail(updatedUser.getEmail());
+        user.setPassword(updatedUser.getPassword());
+        user.setRoles(updatedUser.getRoles());*/
         updatedUser.setId(id);
         userRepository.save(updatedUser);
     }
