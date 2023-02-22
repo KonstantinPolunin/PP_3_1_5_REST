@@ -42,17 +42,22 @@
         <div class="col-2">
             <br/>
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
-                <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
+                <a class="nav-link active" th:unless="${authUser.roleToString() == 'USER'}"
+                   id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+                <a th:class="${authUser.roleToString() == 'USER'} ? 'nav-link active' : 'nav-link'"
+                   id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
             </div>
         </div>
         <!--Правая панель-->
         <div class="col-10">
 
-            <h1>Admin panel</h1>
+
             <div class="tab-content" id="v-pills-tabContent">
                 <!--админ-->
-                <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-admin-tab">
+                <div class="tab-pane fade show active" th:unless="${authUser.roleToString() == 'USER'}"  id="v-pills-admin"
+                     role="tabpanel" aria-labelledby="v-pills-admin-tab">
+
+                    <h1>Admin panel</h1>
                     <!--вкладки -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -64,6 +69,7 @@
                     </ul>
                     <!--содержание вкладок-->
                     <div class="tab-content" id="myTabContent">
+
                         <!--таблица юзеров-->
                         <div class="tab-pane fade show active" id="users_table" role="tabpanel" aria-labelledby="home-tab">
                             <h4>All users</h4>
@@ -304,7 +310,7 @@
                     </div>
                 </div>
                 <!--юзер-->
-                <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                <div th:class="${authUser.roleToString() == 'USER'} ? 'tab-pane fade show active' : 'tab-pane fade'" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <h2>User information-page</h2>
                     <table class="table table-striped">
                         <thead>

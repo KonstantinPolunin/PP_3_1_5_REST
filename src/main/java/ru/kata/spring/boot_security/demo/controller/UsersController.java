@@ -68,4 +68,5 @@ public class UsersController {
         model.addAttribute("authUser", userService.findById(authUser.getId()));
         return "authUser";
     }*/
+
 }
