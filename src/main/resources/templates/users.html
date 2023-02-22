@@ -113,43 +113,43 @@
                                                                 <div class="col-5 text-center">
                                                                     <form th:method="PATCH" th:action="@{/admin/{id}/edit(id=${user.getId()})}" th:object="${user}">
                                                                         <div class="form-group">
-                                                                            <label for="ID">ID</label>
+                                                                            <label for="ID"><b>ID</b></label>
                                                                             <input type="text"
                                                                                    th:name="id"
                                                                                    th:value="*{id}" class="form-control" id="ID" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="firstName2">First Name</label>
+                                                                            <label for="firstName2"><b>First Name</b></label>
                                                                             <input type="text"
                                                                                    th:name="firstName"
                                                                                    th:value="*{firstName}" class="form-control" id="firstName2"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="lastName2">Last Name</label>
+                                                                            <label for="lastName2"><b>Last Name</b></label>
                                                                             <input type="text"
                                                                                    th:name="lastName"
                                                                                    th:value="*{lastName}" class="form-control" id="lastName2"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="age2">Age</label>
+                                                                            <label for="age2"><b>Age</b></label>
                                                                             <input type="number"
                                                                                    th:name="age"
                                                                                    th:value="*{age}" class="form-control" id="age2"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="email2">Email</label>
+                                                                            <label for="email2"><b>Email</b></label>
                                                                             <input type="text"
                                                                                    th:name="email"
                                                                                    th:value="*{email}" class="form-control" id="email2"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="password2">Password</label>
+                                                                            <label for="password2"><b>Password</b></label>
                                                                             <input type="password"
                                                                                    th:name="password"
                                                                                    th:value="*{password}" class="form-control" id="password2"/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="roles2">Role</label>
+                                                                            <label for="roles2"><b>Role</b></label>
                                                                             <select th:name="roles"
                                                                                     th:value="*{roles}" multiple class="form-control form-control-sm" id="roles2" name="roles" size="3" required>
                                                                                 <option th:each="role: ${roles}"
@@ -197,37 +197,37 @@
                                                                 <div class="col-5 text-center">
                                                                     <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
                                                                         <div class="form-group">
-                                                                            <label for="ID3">ID</label>
+                                                                            <label for="ID3"><b>ID</b></label>
                                                                             <input type="text"
                                                                                    th:name="id"
                                                                                    th:value="*{id}" class="form-control" id="ID3" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="firstName3">First Name</label>
+                                                                            <label for="firstName3"><b>First Name</b></label>
                                                                             <input type="text"
                                                                                    th:name="firstName"
                                                                                    th:value="*{firstName}" class="form-control" id="firstName3" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="lastName3">Last Name</label>
+                                                                            <label for="lastName3"><b>Last Name</b></label>
                                                                             <input type="text"
                                                                                    th:name="lastName"
                                                                                    th:value="*{lastName}" class="form-control" id="lastName3" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="age3">Age</label>
+                                                                            <label for="age3"><b>Age</b></label>
                                                                             <input type="text"
                                                                                    th:name="age"
                                                                                    th:value="*{age}" class="form-control" id="age3" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="email3">Email</label>
+                                                                            <label for="email3"><b>Email</b></label>
                                                                             <input type="text"
                                                                                    th:name="email"
                                                                                    th:value="*{email}" class="form-control" id="email3" disabled/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="roles3">Role</label>
+                                                                            <label for="roles3"><b>Role</b></label>
                                                                             <select th:name="roles"
                                                                                     th:value="*{roles}" multiple class="form-control form-control-sm" id="roles3" name="roles" size="3"  disabled>
                                                                                 <option th:each="role: ${roles}"
@@ -269,27 +269,27 @@
                                     <div class="col-5 text-center">
                                         <form th:method="POST" th:action="@{/admin}" th:object="${newUser}">
                                             <div class="form-group">
-                                                <label for="firstName">First Name</label>
+                                                <label for="firstName"><b>First Name</b></label>
                                                 <input type="text" th:field="*{firstName}" class="form-control" id="firstName">
                                             </div>
                                             <div class="form-group">
-                                                <label for="lastName">Last Name</label>
+                                                <label for="lastName"><b>Last Name</b></label>
                                                 <input type="text" th:field="*{lastName}" class="form-control" id="lastName"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="age">Age</label>
+                                                <label for="age"><b>Age</b></label>
                                                 <input type="number" th:field="*{age}" class="form-control" id="age"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="email">Email</label>
+                                                <label for="email"><b>Email</b></label>
                                                 <input type="text" th:field="*{email}" class="form-control" id="email"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="password">Password</label>
+                                                <label for="password"><b>Password</b></label>
                                                 <input type="password" th:field="*{password}" class="form-control" id="password"/>
                                             </div>
                                             <div class="form-group">
-                                                <label for="roles">Role</label>
+                                                <label for="roles"><b>Role</b></label>
                                                 <select th:field="*{roles}" multiple class="form-control form-control-sm" id="roles" name="roles" size="3" required>
                                                     <option th:each="role: ${roles}"
                                                             th:value="${role.id}"
@@ -312,7 +312,9 @@
                 <!--юзер-->
                 <div th:class="${authUser.roleToString() == 'USER'} ? 'tab-pane fade show active' : 'tab-pane fade'" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <h2>User information-page</h2>
-                    <table class="table table-striped">
+                    <div class="container-fluid border rounded">
+                        <h4>About user</h4>
+                        <table class="table table-striped border-top">
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -335,6 +337,7 @@
                         </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
