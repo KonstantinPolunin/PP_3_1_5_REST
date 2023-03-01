@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,14 +46,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(Long id, User updatedUser) {
-        /*User user = userRepository.getById(id);
+        User user = userRepository.getById(id);
         user.setFirstName(updatedUser.getFirstName());
+        user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
         user.setEmail(updatedUser.getEmail());
-        user.setPassword(updatedUser.getPassword());
-        user.setRoles(updatedUser.getRoles());*/
-        updatedUser.setId(id);
-        userRepository.save(updatedUser);
+        if (!Objects.equals(user.getPassword(), updatedUser.getPassword())) {
+            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        } else {
+            user.setPassword(updatedUser.getPassword());
+        }
+        user.setRoles(updatedUser.getRoles());
+        /*updatedUser.setId(id);*/
+        userRepository.save(user);
     }
 
     @Override

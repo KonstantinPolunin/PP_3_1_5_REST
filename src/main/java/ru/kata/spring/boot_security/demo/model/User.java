@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.DTO.UserDto;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -67,6 +68,15 @@ public class User implements UserDetails {
 
     public User() {
 
+    }
+    public  User(UserDto userDto) {
+        this.id = userDto.getId();
+        this.firstName = userDto.getFirstName();
+        this.lastName = userDto.getLastName();
+        this.age = userDto.getAge();
+        this.email = userDto.getEmail();
+        this.password = userDto.getPassword();
+        this.roles = userDto.getRoles();
     }
 
     public String getEmail() {
