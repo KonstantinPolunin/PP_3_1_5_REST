@@ -12,11 +12,11 @@
     <div class="row">
         <div class="col text-white">
             <h3>
-                <!--<div class="p-2">
+                <div class="p-2">
                     <p><b th:utext="${authUser.email}"></b> with roles:
                         <span th:text="${authUser.roleToString()}"></span>
                     </p>
-                </div>-->
+                </div>
             </h3>
         </div>
         <div class="col text-white-50">
@@ -41,12 +41,12 @@
         <!--Левая панель-->
         <div class="col-2">
             <br/>
-           <!-- <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" th:unless="${authUser.roleToString() == 'USER'}"
                    id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
                 <a th:class="${authUser.roleToString() == 'USER'} ? 'nav-link active' : 'nav-link'"
                    id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
-            </div>-->
+            </div>
         </div>
         <!--Правая панель-->
         <div class="col-10">
