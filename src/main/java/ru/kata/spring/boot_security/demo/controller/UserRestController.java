@@ -43,7 +43,7 @@ public class UserRestController {
     @PatchMapping("/admin")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
         User user = new User(userDto);
-        userService.update(user.getId(), user);
+        userService.update(user);
         return ResponseEntity.ok(new UserDto(user));
     }
     @DeleteMapping("/admin")

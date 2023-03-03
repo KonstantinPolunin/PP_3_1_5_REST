@@ -45,18 +45,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(Long id, User updatedUser) {
-        User user = userRepository.getById(id);
+    public void update(User updatedUser) {
+        User user = userRepository.getById(updatedUser.getId());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         user.setAge(updatedUser.getAge());
         user.setEmail(updatedUser.getEmail());
+        user.setRoles(updatedUser.getRoles());
         if (!Objects.equals(user.getPassword(), updatedUser.getPassword())) {
             user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         } else {
             user.setPassword(updatedUser.getPassword());
         }
-        user.setRoles(updatedUser.getRoles());
         /*updatedUser.setId(id);*/
         userRepository.save(user);
     }
@@ -67,53 +67,4 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*private final UserDao userDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-    @Transactional
-    @Override
-    public void add(User authUser) {
-        userDao.add(authUser);
-    }
-
-    @Transactional
-    @Override
-    public List<User> listUsers() {
-        return userDao.listUsers();
-    }
-
-    @Transactional
-    @Override
-    public User getUserById(Long id) {
-        return userDao.getUserById(id);
-    }
-
-    @Transactional
-    @Override
-    public void update(Long id, User authUser) {
-        userDao.update(id, authUser);
-    }
-
-    @Transactional
-    @Override
-    public void remove(Long id) {
-        userDao.remove(id);
-    }*/
 }

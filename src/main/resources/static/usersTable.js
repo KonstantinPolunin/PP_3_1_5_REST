@@ -4,10 +4,10 @@ $(async function () {
 });
 
 class User {
-    constructor(id, firstname, lastname, age, email, roles, password) {
+    constructor(id, firstName, lastName, age, email, roles, password) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.age = age
         this.email = email;
         this.roles = roles;
@@ -23,8 +23,8 @@ class Role {
     }
 }
 
-
-async function allUsers() {
+//Добавлени таблицы Users
+function allUsers() {
 
     fetch("http://localhost:8080/api/admin")
         .then(res => res.json())
@@ -36,9 +36,7 @@ async function allUsers() {
                 Object.keys(user).forEach(
                     key => {
                         if (key === 'password') {
-                            console.log('user');
                         }
-
                         else if (key === 'roles') {
                             const td = document.createElement('td');
                             user[key].forEach(
@@ -60,39 +58,106 @@ async function allUsers() {
                 tr.appendChild(editButton(user));
                 tr.appendChild(deleteButton(user));
                 table.appendChild(tr);
+
+                //Редактирование
+                const select = document.getElementById(`select-for-roles-edit-${user.id}`);
+                (async () => {
+                    const data = await fetchRoles();
+                    data.forEach(role => {
+                        let option = document.createElement("option");
+                        option.value = role.id;
+                        option.text = role.nameNotPrefix;
+                        option.id = role.name;
+                        select.appendChild(option);
+                    })
+                })();
+                const formEdit = document.querySelector(`#edit-form-${user.id}`);
+                formEdit.addEventListener('submit', (event) => {
+                    event.preventDefault(); // предотвращаем отправку формы
+                    const formData = new FormData(formEdit);
+                    const data = {};
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
+                    }
+
+                    const options = select.selectedOptions;
+                    const selectedValues = [];
+                    for (let i = 0; i < options.length; i++) {
+                        let role = new Role(options[i].value, options[i].nameNotPrefix, options[i].id);
+                        selectedValues.push(role);
+                    }
+
+                    let user = new User(data.id, data.firstName, data.lastName, data.age, data.email, selectedValues, data.password);
+
+                    fetch('api/admin', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(user)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+
+                            //Parse на User, включая parse Role
+                            let roles = data.roles.map(role => {
+                                return new Role(role.id, role.nameNotPrefix);
+                            });
+                            user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles);
+
+                            let button = document.querySelector(`#edit-${user.id} .btn-secondary`);
+                            button.click();
+                            for (let field in user) {
+                                let newTd = document.getElementById(`${field}-${user.id}`);
+                                if (field === "password") {
+                                } else {
+                                    if (field === "roles") {
+                                        newTd.innerHTML = user.roles.map(role => role.nameNotPrefix).join(" ");
+                                    } else {
+                                        newTd.innerHTML = user[field];
+                                    }
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+
+                //Удаление
+                const formDelete = document.querySelector(`#delete-form-${user.id}`);
+                formDelete.addEventListener('submit', (event) => {
+                    event.preventDefault(); // предотвращаем отправку формы
+                    const formData = new FormData(formDelete);
+                    const data = {};
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
+                    }
+
+                    fetch('api/admin', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(new User(data.id))
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+
+                            let button = document.querySelector(`#delete-${user.id} .btn-secondary`);
+                            button.click();
+
+                            const trDelete = document.querySelector(`#tr-${user.id}`)
+                            trDelete.remove();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+
             })
-
         })
-    //Удаление
-    const formDelete = document.querySelector(`#delete-form-${user.id}`);
-    formDelete.addEventListener('submit', (event) => {
-        event.preventDefault(); // предотвращаем отправку формы
-        const formData = new FormData(formDelete);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
-        }
 
-        /*fetch('api/admin/users', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(new User(data.id))
-        })
-            .then(response => response.json())
-            .then(data => {
-
-                let button = document.querySelector(`#delete-${user.id} .btn-secondary`);
-                button.click();
-
-                const trDelete = document.querySelector(`#tr-${user.id}`)
-                trDelete.remove();
-            })
-            .catch(error => {
-                console.error(error);
-            });*/
-    });
 
 
 }
@@ -159,6 +224,7 @@ console.log("OK");
 
     return td;
 }
+// Добавляет кнопку Edit и модальное окно, связь по id юзера
 function editButton(user) {
 
     let td = document.createElement("td");
@@ -229,5 +295,10 @@ function editButton(user) {
     td.insertAdjacentHTML('beforeend', modal);
 
     return td;
+}
+
+async function fetchRoles() {
+    const response = await fetch('api/admin/roles');
+    return await response.json();
 }
 

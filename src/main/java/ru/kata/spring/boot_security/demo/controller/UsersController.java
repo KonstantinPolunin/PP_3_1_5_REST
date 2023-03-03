@@ -51,9 +51,9 @@ public class UsersController {
         model.addAttribute("roles", roleService.getListRoles());
         return "edit";
     }*/
-    @PatchMapping("/admin/{id}/edit")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userService.update(id, user);
+    @PatchMapping("/admin/edit")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.update(user);
         return "redirect:/admin";
     }
     @DeleteMapping("/admin/{id}")
