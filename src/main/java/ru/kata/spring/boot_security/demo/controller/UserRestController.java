@@ -22,6 +22,7 @@ public class UserRestController {
     public UserRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
+
     }
 
     @GetMapping("/admin")
@@ -37,7 +38,8 @@ public class UserRestController {
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
         User user = new User(userDto);
         userService.save(user);
-        return ResponseEntity.ok(new UserDto(user));
+        User user1 = userService.findByEmail(user.getEmail());
+        return ResponseEntity.ok(new UserDto(user1));
     }
 
 

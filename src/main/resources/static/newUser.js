@@ -27,13 +27,14 @@ form.addEventListener('submit', (event) => {
     const options = select.selectedOptions;
     const selectedValues = [];
     for (let i = 0; i < options.length; i++) {
-        let role = new Role(options[i].value, options[i].id, options[i].nameNotPrefix);
+        let role = new Role(options[i].value, options[i].nameNotPrefix, options[i].id);
         selectedValues.push(role);
     }
 
 
     let user = new User(0, data.firstName, data.lastName, data.age, data.email, selectedValues, data.password);
-    console.log('user:'+user)
+
+
     fetch('api/admin', {
         method: 'POST',
         headers: {
@@ -102,12 +103,12 @@ form.addEventListener('submit', (event) => {
                 const options = select.selectedOptions;
                 const selectedValues = [];
                 for (let i = 0; i < options.length; i++) {
-                    let role = new Role(options[i].value, options[i].id, options[i].nameNotPrefix);
+                    let role = new Role(options[i].value, options[i].nameNotPrefix, options[i].id);
                     selectedValues.push(role);
                 }
 
                 let user = new User(data.id, data.firstName, data.lastName, data.age, data.email, selectedValues, data.password);
-
+                console.log(user)
                 fetch('api/admin', {
                     method: 'PATCH',
                     headers: {
@@ -120,9 +121,10 @@ form.addEventListener('submit', (event) => {
 
                         //Parse на User, включая parse Role
                         let roles = data.roles.map(role => {
-                            return new Role(role.id, role.nameNotPrefix);
+                            return new Role(role.id, role.nameNotPrefix, role.role);
                         });
                         user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles);
+
 
                         let button = document.querySelector(`#edit-${user.id} .btn-secondary`);
                         button.click();
@@ -180,145 +182,11 @@ form.addEventListener('submit', (event) => {
         });
 });
 
-/*
-// Добавляет кнопку Delete и модальное окно, связь по id юзера
-function deleteButton(user) {
 
-
-    let td = document.createElement("td");
-
-    // HTML код для кнопки
-    let button = `<input type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete-${user.id}" value="Delete"/>`;
-    td.insertAdjacentHTML('beforeend', button);
-    console.log("OK");
-    // HTML код для модального окна
-    let modal = `
-      <div class="modal fade" id="delete-${user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Delete user</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="modal-form-edit">
-              <form id="delete-form-${user.id}">
-
-               <div class="form-group">
-                   <label for="delete-id-field-${user.id}" class="row font-weight-bold justify-content-center">ID</label>
-                   <input type="number" class="form-control" id="delete-id-field-${user.id}" value="${user.id}" name="id" readonly>
-               </div>
-
-               <div class="form-group">
-                   <label for="delete-firstname-field-${user.id}" class="row font-weight-bold justify-content-center">First Name</label>
-                   <input type="text" class="form-control" id="delete-firstname-field-${user.id}" value="${user.firstName}" name="firstName" readonly>
-               </div>
-
-               <div class="form-group">
-                   <label for="delete-lastname-field-${user.id}" class="row font-weight-bold justify-content-center">Last Name</label>
-                   <input type="text" class="form-control" id="delete-lastname-field-${user.id}" value="${user.lastName}" name="lastName" readonly>
-               </div>
-
-               <div class="form-group">
-                   <label for="delete-age-field-${user.id}" class="row font-weight-bold justify-content-center">Age</label>
-                   <input type="number" class="form-control" id="delete-age-field-${user.id}" value="${user.age}" name="age" readonly>
-               </div>
-
-               <div class="form-group">
-                   <label for="delete-email-field-${user.id}" class="row font-weight-bold justify-content-center">E-mail</label>
-                   <input type="email" class="form-control" id="delete-email-field-${user.id}" value="${user.email}" name="email" readonly>
-               </div>
-
-               <div class="modal-footer">
-                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                   <input type="submit" class="btn btn-danger" value="Delete">
-               </div>
-           </form>
-            </div>
-          </div>
-        </div>
-      </div>`
-    ;
-    td.insertAdjacentHTML('beforeend', modal);
-
-    return td;
-}
-// Добавляет кнопку Edit и модальное окно, связь по id юзера
-function editButton(user) {
-
-    let td = document.createElement("td");
-
-    // HTML код для кнопки
-    let button = `<input type="submit" class="btn btn-info" data-toggle="modal" data-target="#edit-${user.id}" value="Edit"/>`;
-    td.insertAdjacentHTML('beforeend', button);
-
-    // HTML код для модального окна
-    let modal = `
-      <div class="modal fade" id="edit-${user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editModalLabel">Edit user</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="modal-form-edit">
-              <form id="edit-form-${user.id}">
-
-               <div class="form-group">
-                   <label for="edit-id-field-${user.id}" class="row font-weight-bold justify-content-center">ID</label>
-                   <input type="number" class="form-control" id="edit-id-field-${user.id}" value="${user.id}" name="id" readonly>
-               </div>
-
-               <div class="form-group">
-                   <label for="edit-firstname-field-${user.id}" class="row font-weight-bold justify-content-center">First Name</label>
-                   <input type="text" class="form-control" id="edit-firstname-field-${user.id}" value="${user.firstName}" name="firstname">
-               </div>
-
-               <div class="form-group">
-                   <label for="edit-lastname-field-${user.id}" class="row font-weight-bold justify-content-center">Last Name</label>
-                   <input type="text" class="form-control" id="edit-lastname-field-${user.id}" value="${user.lastName}" name="lastname">
-               </div>
-
-               <div class="form-group">
-                   <label for="edit-age-field-${user.id}" class="row font-weight-bold justify-content-center">Age</label>
-                   <input type="number" class="form-control" id="edit-age-field-${user.id}" value="${user.age}" name="age">
-               </div>
-
-               <div class="form-group">
-                   <label for="edit-email-field-${user.id}" class="row font-weight-bold justify-content-center">E-mail</label>
-                   <input type="email" class="form-control" id="edit-email-field-${user.id}" value="${user.email}" name="email">
-               </div>
-
-               <div class="form-group">
-                   <label for="edit-password-field-${user.id}" class="row font-weight-bold justify-content-center">Password</label>
-                   <input type="password" class="form-control" id="edit-password-field-${user.id}" value="" name="password">
-               </div>
-               
-               <div class="form-group">
-                   <label for="select-for-roles-edit-${user.id}" class="row font-weight-bold justify-content-center">Role</label>
-                   <select multiple class="form-control" id="select-for-roles-edit-${user.id}" name="roles"></select>
-               </div>
-
-               <div class="modal-footer">
-                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                   <input type="submit" class="btn btn-success" value="Edit">
-               </div>
-           </form>
-            </div>
-          </div>
-        </div>
-      </div>`
-    ;
-    td.insertAdjacentHTML('beforeend', modal);
-
-    return td;
-}
-*/
 
 async function fetchRoles() {
     const response = await fetch('api/admin/roles');
     return await response.json();
 }
+
+

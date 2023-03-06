@@ -110,8 +110,8 @@ function tableUsers() {
                     data.forEach(role => {
                         let option = document.createElement("option");
                         option.value = role.id;
+                        option.id = role.role;
                         option.text = role.nameNotPrefix;
-                        option.id = role.name;
                         select.appendChild(option);
                     })
                 })();
@@ -132,7 +132,7 @@ function tableUsers() {
                     }
 
                     let user = new User(data.id, data.firstName, data.lastName, data.age, data.email, selectedValues, data.password);
-
+                    console.log(user)
                     fetch('api/admin', {
                         method: 'PATCH',
                         headers: {
@@ -145,7 +145,7 @@ function tableUsers() {
 
                             //Parse на User, включая parse Role
                             let roles = data.roles.map(role => {
-                                return new Role(role.id, role.nameNotPrefix);
+                                return new Role(role.id, role.nameNotPrefix, role.role);
                             });
                             user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles);
 
@@ -301,12 +301,12 @@ export function editButton(user) {
 
                <div class="form-group">
                    <label for="edit-firstname-field-${user.id}" class="row font-weight-bold justify-content-center">First Name</label>
-                   <input type="text" class="form-control" id="edit-firstname-field-${user.id}" value="${user.firstName}" name="firstname">
+                   <input type="text" class="form-control" id="edit-firstname-field-${user.id}" value="${user.firstName}" name="firstName">
                </div>
 
                <div class="form-group">
                    <label for="edit-lastname-field-${user.id}" class="row font-weight-bold justify-content-center">Last Name</label>
-                   <input type="text" class="form-control" id="edit-lastname-field-${user.id}" value="${user.lastName}" name="lastname">
+                   <input type="text" class="form-control" id="edit-lastname-field-${user.id}" value="${user.lastName}" name="lastName">
                </div>
 
                <div class="form-group">
@@ -348,4 +348,37 @@ async function fetchRoles() {
     const response = await fetch('api/admin/roles');
     return await response.json();
 }
+
+/*$(async function () {
+    await allUsers();
+});
+const table = $('#table-users');
+
+async function allUsers() {
+    fetch("api/admin")
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(user => {
+                let tableWithUsers = `$(
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.age}</td>
+                    <td>${user.email}</td>
+                    <td>${user.roles.map(role => role.nameNotPrefix.concat(" "))}</td>
+                    <td>
+                        <button type="button" class="btn btn-info" data-toggle="modal" id="buttonEdit"
+                        data-action="edit" data-id="${user.id}" data-target="#edit">Edit</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" id="buttonDelete"
+                        data-action="delete" data-id="${user.id}" data-target="#delete">Delete</button>
+                    </td>
+                </tr>)`;
+                table.append(tableWithUsers);
+
+            })
+        })
+}*/
 
