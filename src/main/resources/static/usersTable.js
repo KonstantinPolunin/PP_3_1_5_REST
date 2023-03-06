@@ -1,63 +1,107 @@
+import {Role, User} from './model.js';
 
-$(async function () {
-    await allUsers();
-});
 
-class User {
-    constructor(id, firstName, lastName, age, email, roles, password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age
-        this.email = email;
-        this.roles = roles;
-        this.password = password;
-    }
-}
+fetch("api/auth")
+    .then(response => response.json())
+    .then(data => {
 
-class Role {
-    constructor(id, role, nameNotPrefix) {
-        this.id = id;
-        this.role = role;
-        this.nameNotPrefix = nameNotPrefix;
-    }
-}
+        //parse User
+        let roles = data.roles.map(role => {
+            return new Role(role.id, role.nameNotPrefix);
+        });
+        let user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles)
+        console.log(user);
 
-//Добавлени таблицы Users
-function allUsers() {
+        //Чек на админа и группировка ролей
+        let loginAuth = data.email;
+        let isAdmin = false;
+        let rolesStr = data.roles.map(role => {
+            if (role.nameNotPrefix === "ADMIN") {
+                isAdmin = true;
+            }
+            return role.nameNotPrefix;
+        })
+        console.log(`Admin : ${isAdmin}`)
+        console.log(`Roles : ${rolesStr}`)
 
-    fetch("http://localhost:8080/api/admin")
-        .then(res => res.json())
+        //Отображение в header логина и ролей
+        let login = document.getElementById('login-roles');
+        login.innerText = `${loginAuth} with roles: ${rolesStr}`;
+
+        //скрытие админ панели, если юзер не админ
+        if (isAdmin === false) {
+            let adminPanel = document.getElementById('admin-panel-left-tab').style.display = 'none';
+            adminPanel = document.getElementById('adminPanel').style.display = 'none';
+            const userButton = $('a[href="#userPanel"]');
+            userButton.click();
+        }
+
+        //Добавление талицы about user
+        let tbody = document.getElementById('table-about-user');
+        let tr = document.createElement('tr');
+        tr.id = `tr-${user.id}`;
+        for (let field in user) {
+            let td = document.createElement("td");
+            if (field === "password") {
+            } else {
+                if (field === "roles") {
+                    td.innerHTML = user.roles.map(role => role.nameNotPrefix).join(" ");
+                } else {
+                    td.innerHTML = user[field];
+                }
+                td.id = `${field}-${user.id}`;
+                tr.append(td);
+            }
+        }
+        tbody.append(tr);
+
+
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+tableUsers();
+
+function tableUsers() {
+    const adminButton = $('a[href="#adminPanel"]');
+    adminButton.click();
+
+    const url = "api/admin"; // Запрос на Rest для получения списка юзеров
+    const tbody = document.getElementById("table-users");
+
+    fetch(url)
+        .then(response => response.json())
         .then(data => {
-            const table = document.getElementById("usersTable-tbody");
-            data.forEach(user => {
-                const tr = document.createElement('tr');
+
+            //Parse на User, включая parse Role
+            let users = data.map(user => {
+                let roles = user.roles.map(role => {
+                    return new Role(role.id, role.nameNotPrefix);
+                });
+                return new User(user.id, user.firstName, user.lastName, user.age, user.email, roles)
+            });
+
+            //Добавляем таблицу юзеров
+            users.forEach(user => {
+                let tr = document.createElement("tr");
                 tr.id = `tr-${user.id}`;
-                Object.keys(user).forEach(
-                    key => {
-                        if (key === 'password') {
-                        }
-                        else if (key === 'roles') {
-                            const td = document.createElement('td');
-                            user[key].forEach(
-                                role => {
-                                    td.textContent += role.nameNotPrefix + ' ';
-                                    tr.appendChild(td);
-
-                                }
-                            )
+                for (let field in user) {
+                    let td = document.createElement("td");
+                    if (field === "password") {
+                    } else {
+                        if (field === "roles") {
+                            td.innerHTML = user.roles.map(role => role.nameNotPrefix).join(" ");
                         } else {
-                            const td = document.createElement('td');
-                            td.textContent = user[key];
-                            tr.appendChild(td);
+                            td.innerHTML = user[field];
                         }
-
-                        
+                        td.id = `${field}-${user.id}`;
+                        tr.append(td);
                     }
-                )
-                tr.appendChild(editButton(user));
-                tr.appendChild(deleteButton(user));
-                table.appendChild(tr);
+                }
+                tr.append(editButton(user));
+                tr.append(deleteButton(user));
+                tbody.append(tr);
 
                 //Редактирование
                 const select = document.getElementById(`select-for-roles-edit-${user.id}`);
@@ -132,7 +176,9 @@ function allUsers() {
                     const data = {};
                     for (let [key, value] of formData.entries()) {
                         data[key] = value;
+
                     }
+
 
                     fetch('api/admin', {
                         method: 'DELETE',
@@ -155,14 +201,15 @@ function allUsers() {
                         });
                 });
 
-            })
+            });
         })
-
-
-
+        .catch(error => {
+            console.error(error);
+        });
 }
+
 // Добавляет кнопку Delete и модальное окно, связь по id юзера
-function deleteButton(user) {
+export function deleteButton(user) {
 
 
     let td = document.createElement("td");
@@ -225,7 +272,7 @@ console.log("OK");
     return td;
 }
 // Добавляет кнопку Edit и модальное окно, связь по id юзера
-function editButton(user) {
+export function editButton(user) {
 
     let td = document.createElement("td");
 

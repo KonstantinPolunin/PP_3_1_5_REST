@@ -40,6 +40,7 @@ public class UserRestController {
         return ResponseEntity.ok(new UserDto(user));
     }
 
+
     @PatchMapping("/admin")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
         User user = new User(userDto);
