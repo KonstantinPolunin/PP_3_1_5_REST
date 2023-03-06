@@ -1,9 +1,11 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.DTO.UserDto;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
@@ -26,8 +28,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDto> findAll() {
+        return userRepository.findAll().stream()
+                .map(UserDto::new)
+                .toList();
     }
 
     @Override
@@ -38,26 +42,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
+    public void save(UserDto userDto) {
+        User user = new User(userDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void update(User updatedUser) {
-        User user = userRepository.getById(updatedUser.getId());
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setAge(updatedUser.getAge());
-        user.setEmail(updatedUser.getEmail());
-        user.setRoles(updatedUser.getRoles());
-        if (!Objects.equals(user.getPassword(), updatedUser.getPassword())) {
-            user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+    public void update(User userUpdate) {
+        User user = userRepository.getById(userUpdate.getId());
+        user.setFirstName(userUpdate.getFirstName());
+        user.setLastName(userUpdate.getLastName());
+        user.setAge(userUpdate.getAge());
+        user.setEmail(userUpdate.getEmail());
+        user.setRoles(userUpdate.getRoles());
+        if (!Objects.equals(user.getPassword(), userUpdate.getPassword())) {
+            user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         } else {
-            user.setPassword(updatedUser.getPassword());
+            user.setPassword(userUpdate.getPassword());
         }
-        /*updatedUser.setId(id);*/
         userRepository.save(user);
     }
 

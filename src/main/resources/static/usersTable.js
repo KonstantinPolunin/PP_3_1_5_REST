@@ -132,7 +132,7 @@ function tableUsers() {
                     }
 
                     let user = new User(data.id, data.firstName, data.lastName, data.age, data.email, selectedValues, data.password);
-                    console.log(user)
+                    //console.log(user)
                     fetch('api/admin', {
                         method: 'PATCH',
                         headers: {
@@ -148,7 +148,7 @@ function tableUsers() {
                                 return new Role(role.id, role.nameNotPrefix, role.role);
                             });
                             user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles);
-
+                            console.log(user)
                             let button = document.querySelector(`#edit-${user.id} .btn-secondary`);
                             button.click();
                             for (let field in user) {

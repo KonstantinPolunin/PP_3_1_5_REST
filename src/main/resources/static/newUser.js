@@ -47,7 +47,7 @@ form.addEventListener('submit', (event) => {
 
             //Parse на User, включая parse Role
             let roles = data.roles.map(role => {
-                return new Role(role.id, role.nameNotPrefix);
+                return new Role(role.id, role.nameNotPrefix, role.role);
             });
 
 
@@ -124,7 +124,7 @@ form.addEventListener('submit', (event) => {
                             return new Role(role.id, role.nameNotPrefix, role.role);
                         });
                         user = new User(data.id, data.firstName, data.lastName, data.age, data.email, roles);
-
+                        console.log('newUser:'+user)
 
                         let button = document.querySelector(`#edit-${user.id} .btn-secondary`);
                         button.click();

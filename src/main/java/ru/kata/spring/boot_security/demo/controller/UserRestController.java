@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class UserRestController {
     private final UserService userService;
     private final RoleService roleService;
@@ -25,31 +25,28 @@ public class UserRestController {
 
     }
 
-    @GetMapping("/admin")
+    @GetMapping()
     public ResponseEntity<List<UserDto>> getUsersTable() {
-        List<UserDto> list = userService.findAll().stream()
-                .map(UserDto::new)
-                .collect(Collectors.toList());
+        List<UserDto> list = userService.findAll();
         return ResponseEntity.ok(list);
     }
 
 
-    @PostMapping("/admin")
+    @PostMapping()
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto) {
-        User user = new User(userDto);
-        userService.save(user);
-        User user1 = userService.findByEmail(user.getEmail());
-        return ResponseEntity.ok(new UserDto(user1));
+        userService.save(userDto);
+        User user = userService.findByEmail(userDto.getEmail());
+        return ResponseEntity.ok(new UserDto(user));
     }
 
 
-    @PatchMapping("/admin")
+    @PatchMapping()
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
         User user = new User(userDto);
         userService.update(user);
         return ResponseEntity.ok(new UserDto(user));
     }
-    @DeleteMapping("/admin")
+    @DeleteMapping()
     public ResponseEntity<HttpStatus> deleteUser(@RequestBody UserDto userDto) {
         userService.delete(userDto.getId());
         return ResponseEntity.ok(HttpStatus.OK);
